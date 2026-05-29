@@ -232,8 +232,12 @@ def prompt_int(msg: str, default: int = None, min_value: int = None) -> int:
 
 
 def prompt_items_subset() -> List[Item]:
-    print("Danh sách vật phẩm mặc định (bạn chọn danh sách GIỮ lại):")
-    for idx, (name, w, v) in enumerate(DEFAULT_ITEMS, start=1):
+    # Cho phép thêm/sửa/xóa vật phẩm trước khi chọn danh sách GIỮ lại
+    items: List[Item] = [*DEFAULT_ITEMS]
+
+    print("\n--- Chỉnh sửa danh sách vật phẩm (bật/tắt theo danh sách GIỮ lại) ---")
+    print("Mặc định đang có:")
+    for idx, (name, w, v) in enumerate(items, start=1):
         print(f"{idx}. {name} (w={w}, v={v})")
 
     print("\nNhập các số thứ tự bạn muốn GIỮ (cách nhau bởi khoảng trắng).")
@@ -319,6 +323,11 @@ def main():
     print("\n=== GA Statistics ===")
     print(f"Best fitness overall: {best_fit}")
     print(f"Generations executed: {len(result['best_history'])}")
+
+    print("\n--- Đường chọn trong GA (chromosome best) ---")
+    print(f"Chromosome: {''.join(str(g) for g in best_ind)}")
+    chosen_indices = [i + 1 for i, g in enumerate(best_ind) if g == 1]
+    print(f"STT item được chọn: {chosen_indices}")
 
     plot_histories(result["best_history"], result["avg_history"], show=False)
 
